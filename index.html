@@ -7,89 +7,178 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* Custom styles can go here if needed */
+        /* Inter Font (Tailwind's default sans-serif is similar, but this ensures it) */
         body {
-            font-family: 'Inter', sans-serif; /* A clean, modern font */
-            background-color: #1a1a1a; /* Default dark background */
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a1a; /* Default background if image fails or isn't set */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            min-height: 100vh;
+            min-height: 100vh; /* Ensure background covers full viewport height */
             display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem; /* Added padding for smaller screens */
+            align-items: center; /* Vertically center the card */
+            justify-content: center; /* Horizontally center the card */
+            padding: 1rem; /* Padding for smaller screens to prevent card touching edges */
+            transition: background-image 0.5s ease-in-out; /* Smooth transition for background image changes */
         }
 
-        /* Style for the main card - we'll make this customizable later */
+        /* Styling for the main card */
         .biolink-card {
-            background-color: rgba(30, 30, 30, 0.8); /* Semi-transparent dark card */
-            backdrop-filter: blur(10px); /* Frosted glass effect */
-            -webkit-backdrop-filter: blur(10px); /* Safari support */
-            border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+            backdrop-filter: blur(10px); /* Frosted glass effect for supported browsers */
+            -webkit-backdrop-filter: blur(10px); /* Safari support for frosted glass */
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions for card style changes */
         }
 
-        /* Styling for links */
+        /* Styling for link buttons */
         .biolink-button {
-            transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+            transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            display: flex; /* Enables flexbox for aligning icon and text */
+            align-items: center; /* Vertically aligns icon and text in the button */
+            justify-content: center; /* Centers content (icon and text) within the button */
+            width: 100%; /* Makes buttons take full width of their container */
+            text-align: center; /* Ensures text is centered if flex justification is not enough */
+        }
+        .biolink-button i { /* Styles for icons within buttons */
+            margin-right: 0.75rem; /* Space between icon and text (Tailwind: mr-3) */
         }
         .biolink-button:hover {
-            transform: translateY(-3px); /* Slight lift on hover */
-            background-color: rgba(255, 255, 255, 0.15); /* Lighter background on hover */
+            transform: translateY(-3px) scale(1.02); /* Slight lift and scale effect on hover */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* Adds depth with a shadow on hover */
+        }
+
+        /* Fallback for placeholder image if actual image fails to load */
+        img[alt="Profile Picture"]:not([src*='placehold.co']):not([src*='unsplash.com']) { /* Be more specific if needed */
+            background-color: #4A5568; /* A neutral background for broken image */
         }
     </style>
 </head>
-<body style="background-image: url('https://placehold.co/1920x1080/333333/cccccc?text=Your+Background+Here');">
-    <div id="bioCard" class="biolink-card text-white w-full max-w-lg mx-auto rounded-xl shadow-2xl p-6 md:p-8">
+<body>
+    <div id="bioCard" class="w-full max-w-lg mx-auto shadow-2xl p-6 md:p-8">
 
         <div class="text-center mb-6">
             <img id="profilePicture"
-                 src="https://placehold.co/150x150/4A5568/E2E8F0?text=You"
+                 src="https://placehold.co/150x150/4A5568/E2E8F0?text=Loading..."
                  alt="Profile Picture"
-                 class="w-24 h-24 md:w-32 md:h-32 rounded-full mx-auto mb-4 border-2 border-gray-400 object-cover">
+                 class="w-24 h-24 md:w-32 md:h-32 rounded-full mx-auto mb-4 border-2 border-gray-400 object-cover shadow-lg">
 
-            <h1 id="profileName" class="text-2xl md:text-3xl font-bold">Your Name</h1>
-
-            <p id="profileBio" class="text-sm md:text-base text-gray-300 mt-2">
-                A short and catchy bio about yourself. Describe what you do or what you're passionate about!
-            </p>
+            <h1 id="profileName" class="text-2xl md:text-3xl font-bold">Loading...</h1>
+            <p id="profileBio" class="text-sm md:text-base text-gray-300 mt-2">Loading bio...</p>
         </div>
 
         <div id="linksContainer" class="space-y-4">
-            <a href="#" target="_blank" class="biolink-button bg-gray-700 hover:bg-gray-600 text-white font-medium py-3 px-5 rounded-lg w-full flex items-center justify-center text-sm md:text-base">
-                <i class="fab fa-twitter mr-3"></i> My Twitter / X
-            </a>
-
-            <a href="#" target="_blank" class="biolink-button bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 px-5 rounded-lg w-full flex items-center justify-center text-sm md:text-base">
-                <i class="fab fa-linkedin-in mr-3"></i>
-                My LinkedIn
-            </a>
-
-            <a href="#" target="_blank" class="biolink-button bg-purple-600 hover:bg-purple-500 text-white font-medium py-3 px-5 rounded-lg w-full flex items-center justify-center text-sm md:text-base">
-                <i class="fab fa-github mr-3"></i>
-                My GitHub
-            </a>
-
-            <a href="#" target="_blank" class="biolink-button bg-pink-500 hover:bg-pink-400 text-white font-medium py-3 px-5 rounded-lg w-full flex items-center justify-center text-sm md:text-base">
-                <i class="fas fa-palette mr-3"></i>
-                My Portfolio
-            </a>
-        </div>
+            </div>
 
         <div class="text-center mt-8">
-            <p class="text-xs text-gray-500">
-                &copy; <span id="currentYear"></span> Your Name. All Rights Reserved.
+            <p id="footerText" class="text-xs text-gray-500">
+                &copy; <span id="currentYear"></span> <span id="footerName">Your Name</span>. All Rights Reserved.
             </p>
         </div>
     </div>
 
     <script>
-        // Set current year in footer
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        // This script runs after the HTML document is fully loaded and parsed.
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentYearSpan = document.getElementById('currentYear');
+            if (currentYearSpan) {
+                currentYearSpan.textContent = new Date().getFullYear(); // Set current year in footer
+            }
 
-        // Placeholder for future JavaScript for customization panel
-        // For now, this page is static.
-        console.log("BioLink page loaded. Customization panel will be a separate HTML file or section.");
+            // Fetch the configuration file
+            fetch('config.json')
+                .then(response => {
+                    if (!response.ok) {
+                        // If config.json is not found or there's an error, throw an error.
+                        throw new Error(`HTTP error! status: ${response.status} - Could not load config.json. Make sure it's in the same directory as index.html and is valid JSON.`);
+                    }
+                    return response.json(); // Parse the JSON response
+                })
+                .then(config => {
+                    // --- Apply Profile Information ---
+                    const profile = config.profile || {}; // Fallback to empty object if profile is undefined
+                    document.getElementById('profileName').textContent = profile.name || 'Your Name';
+                    document.getElementById('profileBio').textContent = profile.bio || 'Your bio here.';
+                    document.getElementById('profilePicture').src = profile.pictureUrl || 'https://placehold.co/150x150/cccccc/969696?text=No+Image';
+                    document.getElementById('profilePicture').alt = profile.name ? `${profile.name}'s Profile Picture` : 'Profile Picture';
+                    document.getElementById('footerName').textContent = profile.footerName || profile.name || 'Your Name';
+
+
+                    // --- Apply Appearance Settings ---
+                    const appearance = config.appearance || {};
+
+                    // Background Image for the entire page
+                    if (appearance.backgroundImageUrl) {
+                        document.body.style.backgroundImage = `url('${appearance.backgroundImageUrl}')`;
+                    }
+
+                    // Card styling
+                    const cardConfig = appearance.card || {};
+                    const bioCard = document.getElementById('bioCard');
+                    bioCard.style.backgroundColor = cardConfig.backgroundColor || 'rgba(30, 30, 30, 0.8)'; // Default card background
+                    bioCard.style.color = cardConfig.textColor || '#FFFFFF'; // Default text color for the card content
+                    bioCard.style.borderColor = cardConfig.borderColor || 'rgba(255, 255, 255, 0.1)';
+                    bioCard.style.borderWidth = cardConfig.borderColor ? '1px' : '0px'; // Add border only if color is specified
+                    bioCard.style.borderStyle = cardConfig.borderColor ? 'solid' : 'none';
+
+                    // Apply Tailwind border radius class for the card
+                    // Remove any existing rounded-* classes first to avoid conflicts if changing dynamically
+                    const existingRoundedClasses = Array.from(bioCard.classList).filter(cls => cls.startsWith('rounded-'));
+                    existingRoundedClasses.forEach(cls => bioCard.classList.remove(cls));
+                    bioCard.classList.add(cardConfig.borderRadius || 'rounded-xl'); // Default to rounded-xl if not specified
+
+                    // Profile text specific colors (Name and Bio)
+                    const profileTextConfig = appearance.profileText || {};
+                    document.getElementById('profileName').style.color = profileTextConfig.nameColor || cardConfig.textColor || '#FFFFFF'; // Fallback to card text color, then to white
+                    document.getElementById('profileBio').style.color = profileTextConfig.bioColor || cardConfig.textColor || '#D1D5DB'; // Fallback to card text color, then to light gray
+
+
+                    // --- Populate Links ---
+                    const linksContainer = document.getElementById('linksContainer');
+                    linksContainer.innerHTML = ''; // Clear any placeholder content or previous links
+                    const links = config.links || []; // Fallback to empty array
+
+                    links.forEach(linkInfo => {
+                        if (linkInfo.enabled) { // Only add the link if it's enabled in the config
+                            const linkElement = document.createElement('a');
+                            linkElement.href = linkInfo.url || '#';
+                            linkElement.target = '_blank'; // Open links in a new tab
+                            linkElement.rel = 'noopener noreferrer'; // Security best practice for target="_blank"
+
+                            // Base classes for all buttons + specific classes from config for individual styling
+                            // Includes default styling if linkInfo.classes is not provided
+                            linkElement.className = `biolink-button font-medium py-3 px-5 rounded-lg text-sm md:text-base ${linkInfo.classes || 'bg-gray-700 hover:bg-gray-600 text-white'}`;
+
+                            // Add icon if specified
+                            if (linkInfo.icon) {
+                                const iconElement = document.createElement('i');
+                                iconElement.className = `${linkInfo.icon}`; // Font Awesome classes (e.g., "fab fa-twitter")
+                                // The margin-right for the icon is handled by the .biolink-button i CSS rule
+                                linkElement.appendChild(iconElement);
+                            }
+
+                            // Add link text
+                            linkElement.appendChild(document.createTextNode(linkInfo.text || 'Link'));
+                            linksContainer.appendChild(linkElement); // Add the new link to the container
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading or applying config:', error);
+                    // Display a user-friendly error message directly on the page if config fails
+                    const bioCard = document.getElementById('bioCard');
+                    if (bioCard) {
+                        // Clear existing content and show error
+                        bioCard.innerHTML = `<div class="text-center text-red-300 p-4 bg-red-900 bg-opacity-50 rounded-lg">
+                                                <h2 class="text-xl font-bold mb-2">Oops! Configuration Error</h2>
+                                                <p>Could not load or process the BioLink configuration (config.json).</p>
+                                                <p class="text-xs mt-2 font-mono">${error.message}</p>
+                                                <p class="text-xs mt-1">Please ensure 'config.json' exists, is accessible, and is correctly formatted.</p>
+                                             </div>`;
+                        bioCard.style.backgroundColor = 'rgba(50,20,20,0.8)'; // Dark red error state background
+                        document.body.style.backgroundImage = 'none'; // Remove background image on error
+                        document.body.style.backgroundColor = '#111'; // Darker body background on error
+                    }
+                });
+        });
     </script>
 </body>
 </html>
