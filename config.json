@@ -1,63 +1,22 @@
 {
   "profile": {
-    "name": "Your Awesome Name",
-    "bio": "Welcome to my digital space! Here you'll find all my important links and projects. Feel free to connect!",
-    "pictureUrl": "https://placehold.co/150x150/7E22CE/FFFFFF?text=Me",
-    "footerName": "Your Awesome Name"
+    "name": "Turtles",
+    "bio": "Hey",
+    "pictureUrl": "",
+    "footerName": "Boo"
   },
   "appearance": {
-    "backgroundImageUrl": "https://images.unsplash.com/photo-1500964757637-c85e8a162699?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80",
+    "backgroundImageUrl": "",
     "card": {
       "backgroundColor": "rgba(20, 20, 20, 0.75)",
-      "textColor": "#E5E7EB",
+      "textColor": "#40ff3d",
       "borderColor": "rgba(255, 255, 255, 0.2)",
-      "borderRadius": "rounded-xl"
+      "borderRadius": "rounded-2xl"
     },
     "profileText": {
-        "nameColor": "#FFFFFF",
-        "bioColor": "#D1D5DB"
+      "nameColor": "#fe7171",
+      "bioColor": "#80b9ff"
     }
   },
-  "links": [
-    {
-      "id": "personal_website",
-      "text": "My Personal Website",
-      "url": "https://example.com",
-      "icon": "fas fa-globe",
-      "enabled": true,
-      "classes": "bg-purple-600 hover:bg-purple-700 text-white"
-    },
-    {
-      "id": "twitter",
-      "text": "Follow me on X (Twitter)",
-      "url": "#",
-      "icon": "fab fa-twitter",
-      "enabled": true,
-      "classes": "bg-gray-800 hover:bg-gray-700 text-white"
-    },
-    {
-      "id": "linkedin",
-      "text": "Connect on LinkedIn",
-      "url": "#",
-      "icon": "fab fa-linkedin-in",
-      "enabled": true,
-      "classes": "bg-blue-700 hover:bg-blue-800 text-white"
-    },
-    {
-      "id": "github",
-      "text": "My GitHub Projects",
-      "url": "#",
-      "icon": "fab fa-github",
-      "enabled": true,
-      "classes": "bg-neutral-700 hover:bg-neutral-600 text-white"
-    },
-    {
-      "id": "youtube_channel",
-      "text": "My YouTube Channel",
-      "url": "#",
-      "icon": "fab fa-youtube",
-      "enabled": false,
-      "classes": "bg-red-600 hover:bg-red-700 text-white"
-    }
-  ]
+  "links": []
 }
