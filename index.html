@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My BioLink</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* Custom styles can go here if needed */
+        body {
+            font-family: 'Inter', sans-serif; /* A clean, modern font */
+            background-color: #1a1a1a; /* Default dark background */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem; /* Added padding for smaller screens */
+        }
+
+        /* Style for the main card - we'll make this customizable later */
+        .biolink-card {
+            background-color: rgba(30, 30, 30, 0.8); /* Semi-transparent dark card */
+            backdrop-filter: blur(10px); /* Frosted glass effect */
+            -webkit-backdrop-filter: blur(10px); /* Safari support */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+        }
+
+        /* Styling for links */
+        .biolink-button {
+            transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+        }
+        .biolink-button:hover {
+            transform: translateY(-3px); /* Slight lift on hover */
+            background-color: rgba(255, 255, 255, 0.15); /* Lighter background on hover */
+        }
+    </style>
+</head>
+<body style="background-image: url('https://placehold.co/1920x1080/333333/cccccc?text=Your+Background+Here');">
+    <div id="bioCard" class="biolink-card text-white w-full max-w-lg mx-auto rounded-xl shadow-2xl p-6 md:p-8">
+
+        <div class="text-center mb-6">
+            <img id="profilePicture"
+                 src="https://placehold.co/150x150/4A5568/E2E8F0?text=You"
+                 alt="Profile Picture"
+                 class="w-24 h-24 md:w-32 md:h-32 rounded-full mx-auto mb-4 border-2 border-gray-400 object-cover">
+
+            <h1 id="profileName" class="text-2xl md:text-3xl font-bold">Your Name</h1>
+
+            <p id="profileBio" class="text-sm md:text-base text-gray-300 mt-2">
+                A short and catchy bio about yourself. Describe what you do or what you're passionate about!
+            </p>
+        </div>
+
+        <div id="linksContainer" class="space-y-4">
+            <a href="#" target="_blank" class="biolink-button bg-gray-700 hover:bg-gray-600 text-white font-medium py-3 px-5 rounded-lg w-full flex items-center justify-center text-sm md:text-base">
+                <i class="fab fa-twitter mr-3"></i> My Twitter / X
+            </a>
+
+            <a href="#" target="_blank" class="biolink-button bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 px-5 rounded-lg w-full flex items-center justify-center text-sm md:text-base">
+                <i class="fab fa-linkedin-in mr-3"></i>
+                My LinkedIn
+            </a>
+
+            <a href="#" target="_blank" class="biolink-button bg-purple-600 hover:bg-purple-500 text-white font-medium py-3 px-5 rounded-lg w-full flex items-center justify-center text-sm md:text-base">
+                <i class="fab fa-github mr-3"></i>
+                My GitHub
+            </a>
+
+            <a href="#" target="_blank" class="biolink-button bg-pink-500 hover:bg-pink-400 text-white font-medium py-3 px-5 rounded-lg w-full flex items-center justify-center text-sm md:text-base">
+                <i class="fas fa-palette mr-3"></i>
+                My Portfolio
+            </a>
+        </div>
+
+        <div class="text-center mt-8">
+            <p class="text-xs text-gray-500">
+                &copy; <span id="currentYear"></span> Your Name. All Rights Reserved.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Placeholder for future JavaScript for customization panel
+        // For now, this page is static.
+        console.log("BioLink page loaded. Customization panel will be a separate HTML file or section.");
+    </script>
+</body>
+</html>
