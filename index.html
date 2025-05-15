@@ -7,67 +7,146 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* Inter Font (Tailwind's default sans-serif is similar, but this ensures it) */
+        /* Inter Font */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1a1a1a; /* Default background if image fails or isn't set */
+            background-color: #1a1a1a;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            min-height: 100vh; /* Ensure background covers full viewport height */
+            min-height: 100vh;
             display: flex;
-            align-items: center; /* Vertically center the card */
-            justify-content: center; /* Horizontally center the card */
-            padding: 1rem; /* Padding for smaller screens to prevent card touching edges */
-            transition: background-image 0.5s ease-in-out; /* Smooth transition for background image changes */
+            flex-direction: column; /* Allow admin panel to sit above/below card */
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            transition: background-image 0.5s ease-in-out;
         }
 
-        /* Styling for the main card */
         .biolink-card {
-            backdrop-filter: blur(10px); /* Frosted glass effect for supported browsers */
-            -webkit-backdrop-filter: blur(10px); /* Safari support for frosted glass */
-            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions for card style changes */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+            max-width: 500px; /* Max width for the card */
+            margin-bottom: 2rem; /* Space for admin toggle button */
         }
 
-        /* Styling for link buttons */
         .biolink-button {
             transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            display: flex; /* Enables flexbox for aligning icon and text */
-            align-items: center; /* Vertically aligns icon and text in the button */
-            justify-content: center; /* Centers content (icon and text) within the button */
-            width: 100%; /* Makes buttons take full width of their container */
-            text-align: center; /* Ensures text is centered if flex justification is not enough */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            text-align: center;
         }
-        .biolink-button i { /* Styles for icons within buttons */
-            margin-right: 0.75rem; /* Space between icon and text (Tailwind: mr-3) */
+        .biolink-button i {
+            margin-right: 0.75rem;
         }
         .biolink-button:hover {
-            transform: translateY(-3px) scale(1.02); /* Slight lift and scale effect on hover */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* Adds depth with a shadow on hover */
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        /* Fallback for placeholder image if actual image fails to load */
-        img[alt="Profile Picture"]:not([src*='placehold.co']):not([src*='unsplash.com']) { /* Be more specific if needed */
-            background-color: #4A5568; /* A neutral background for broken image */
+        /* Admin Panel Styles */
+        #adminPanelContainer {
+            background-color: #111827; /* Even darker background for admin */
+            color: #e5e7eb;
+            padding: 1.5rem;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 700px; /* Admin panel can be wider */
+            margin-top: 2rem;
+            display: none; /* Initially hidden */
+        }
+        .admin-section {
+            background-color: #1f2937; /* Slightly lighter than panel bg */
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        }
+        .admin-section h2 {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #374151;
+            padding-bottom: 0.5rem;
+        }
+        #adminPanelContainer label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #d1d5db;
+        }
+        #adminPanelContainer input[type="text"],
+        #adminPanelContainer input[type="url"],
+        #adminPanelContainer input[type="color"],
+        #adminPanelContainer textarea,
+        #adminPanelContainer select {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            background-color: #374151; /* bg-gray-700 */
+            border: 1px solid #4b5563; /* border-gray-600 */
+            color: #e5e7eb;
+            margin-bottom: 1rem;
+        }
+        #adminPanelContainer input[type="checkbox"] {
+            margin-right: 0.5rem;
+            accent-color: #60a5fa;
+        }
+        .btn {
+            padding: 0.6rem 1.2rem; /* Slightly smaller buttons for admin panel */
+            border-radius: 0.375rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            font-size: 0.9rem;
+        }
+        .btn-primary { background-color: #3b82f6; color: white; }
+        .btn-primary:hover { background-color: #2563eb; }
+        .btn-secondary { background-color: #6b7280; color: white; }
+        .btn-secondary:hover { background-color: #4b5563; }
+        .btn-danger { background-color: #ef4444; color: white; }
+        .btn-danger:hover { background-color: #dc2626; }
+
+        #generatedJsonOutputAdmin {
+            white-space: pre-wrap;
+            word-break: break-all;
+            font-family: monospace;
+            min-height: 150px; /* Smaller height for integrated panel */
+            background-color: #1f2937;
+            border: 1px solid #374151;
+        }
+        .link-item-admin {
+            border: 1px solid #374151;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.375rem;
+        }
+        .link-item-admin h3 {
+            font-size: 1rem; /* text-base */
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+        #adminToggleButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
         }
     </style>
 </head>
 <body>
-    <div id="bioCard" class="w-full max-w-lg mx-auto shadow-2xl p-6 md:p-8">
-
+    <div id="bioCard" class="biolink-card text-white p-6 md:p-8">
         <div class="text-center mb-6">
-            <img id="profilePicture"
-                 src="https://placehold.co/150x150/4A5568/E2E8F0?text=Loading..."
-                 alt="Profile Picture"
-                 class="w-24 h-24 md:w-32 md:h-32 rounded-full mx-auto mb-4 border-2 border-gray-400 object-cover shadow-lg">
-
+            <img id="profilePicture" src="https://placehold.co/150x150/4A5568/E2E8F0?text=Loading..." alt="Profile Picture" class="w-24 h-24 md:w-32 md:h-32 rounded-full mx-auto mb-4 border-2 border-gray-400 object-cover shadow-lg">
             <h1 id="profileName" class="text-2xl md:text-3xl font-bold">Loading...</h1>
             <p id="profileBio" class="text-sm md:text-base text-gray-300 mt-2">Loading bio...</p>
         </div>
-
-        <div id="linksContainer" class="space-y-4">
-            </div>
-
+        <div id="linksContainer" class="space-y-4"></div>
         <div class="text-center mt-8">
             <p id="footerText" class="text-xs text-gray-500">
                 &copy; <span id="currentYear"></span> <span id="footerName">Your Name</span>. All Rights Reserved.
@@ -75,108 +154,301 @@
         </div>
     </div>
 
+    <button id="adminToggleButton" class="btn btn-primary shadow-lg">
+        <i class="fas fa-cog"></i> Admin
+    </button>
+
+    <div id="adminPanelContainer">
+        <header class="mb-6 text-center">
+            <h1 class="text-2xl font-bold text-white">BioLink Customization</h1>
+            <p class="text-md text-gray-400">Modify settings and generate new config.json.</p>
+        </header>
+
+        <section class="admin-section" id="profileSettingsAdmin">
+            <h2><i class="fas fa-user-circle mr-2"></i>Profile</h2>
+            <div><label for="profileNameAdmin">Name:</label><input type="text" id="profileNameAdmin"></div>
+            <div><label for="profileBioAdmin">Bio:</label><textarea id="profileBioAdmin" rows="3"></textarea></div>
+            <div><label for="profilePictureUrlAdmin">Picture URL:</label><input type="url" id="profilePictureUrlAdmin"></div>
+            <div><label for="footerNameAdmin">Footer Name:</label><input type="text" id="footerNameAdmin"></div>
+        </section>
+
+        <section class="admin-section" id="appearanceSettingsAdmin">
+            <h2><i class="fas fa-paint-brush mr-2"></i>Appearance</h2>
+            <div><label for="backgroundImageUrlAdmin">BG Image URL:</label><input type="url" id="backgroundImageUrlAdmin"></div>
+            <h3 class="text-lg font-semibold mt-4 mb-2 text-gray-300">Card Styling</h3>
+            <div><label for="cardBackgroundColorAdmin">Card BG (rgba):</label><input type="text" id="cardBackgroundColorAdmin" placeholder="rgba(20,20,20,0.75)"></div>
+            <div><label for="cardTextColorAdmin">Card Text (Hex):</label><input type="color" id="cardTextColorAdmin"></div>
+            <div><label for="cardBorderColorAdmin">Card Border (rgba/hex):</label><input type="text" id="cardBorderColorAdmin" placeholder="rgba(255,255,255,0.2)"></div>
+            <div><label for="cardBorderRadiusAdmin">Card Radius (Tailwind):</label><input type="text" id="cardBorderRadiusAdmin" placeholder="rounded-xl"></div>
+            <h3 class="text-lg font-semibold mt-4 mb-2 text-gray-300">Profile Text Styling</h3>
+            <div><label for="profileNameColorAdmin">Name Color (Hex):</label><input type="color" id="profileNameColorAdmin"></div>
+            <div><label for="profileBioColorAdmin">Bio Color (Hex):</label><input type="color" id="profileBioColorAdmin"></div>
+        </section>
+
+        <section class="admin-section" id="linksSettingsAdmin">
+            <h2><i class="fas fa-link mr-2"></i>Links</h2>
+            <div id="linksListContainerAdmin"></div>
+            <button id="addLinkBtnAdmin" class="btn btn-secondary mt-2"><i class="fas fa-plus mr-1"></i>Add Link</button>
+        </section>
+
+        <section class="admin-section mt-6">
+            <h2><i class="fas fa-cogs mr-2"></i>Generate Configuration</h2>
+            <button id="generateConfigBtnAdmin" class="btn btn-primary w-full text-md"><i class="fas fa-file-code mr-2"></i>Generate New config.json</button>
+            <div class="mt-3">
+                <label for="generatedJsonOutputAdmin">Generated JSON (Copy and paste into config.json):</label>
+                <textarea id="generatedJsonOutputAdmin" rows="10" readonly class="w-full"></textarea>
+            </div>
+        </section>
+         <button id="closeAdminPanelBtn" class="btn btn-danger mt-4 w-full"><i class="fas fa-times mr-2"></i>Close Admin Panel</button>
+    </div>
+
     <script>
-        // This script runs after the HTML document is fully loaded and parsed.
-        document.addEventListener('DOMContentLoaded', () => {
-            const currentYearSpan = document.getElementById('currentYear');
-            if (currentYearSpan) {
-                currentYearSpan.textContent = new Date().getFullYear(); // Set current year in footer
+        // --- Global Config Variable ---
+        let currentConfig = {}; // To hold the loaded configuration
+
+        // --- DOM Elements (Public View) ---
+        const bodyElement = document.body;
+        const bioCard = document.getElementById('bioCard');
+        const profilePicture = document.getElementById('profilePicture');
+        const profileName = document.getElementById('profileName');
+        const profileBio = document.getElementById('profileBio');
+        const linksContainer = document.getElementById('linksContainer');
+        const currentYearSpan = document.getElementById('currentYear');
+        const footerNameSpan = document.getElementById('footerName');
+
+        // --- DOM Elements (Admin Panel) ---
+        const adminPanelContainer = document.getElementById('adminPanelContainer');
+        const adminToggleButton = document.getElementById('adminToggleButton');
+        const closeAdminPanelBtn = document.getElementById('closeAdminPanelBtn');
+
+        const profileNameAdminInput = document.getElementById('profileNameAdmin');
+        const profileBioAdminInput = document.getElementById('profileBioAdmin');
+        const profilePictureUrlAdminInput = document.getElementById('profilePictureUrlAdmin');
+        const footerNameAdminInput = document.getElementById('footerNameAdmin');
+        const backgroundImageUrlAdminInput = document.getElementById('backgroundImageUrlAdmin');
+        const cardBackgroundColorAdminInput = document.getElementById('cardBackgroundColorAdmin');
+        const cardTextColorAdminInput = document.getElementById('cardTextColorAdmin');
+        const cardBorderColorAdminInput = document.getElementById('cardBorderColorAdmin');
+        const cardBorderRadiusAdminInput = document.getElementById('cardBorderRadiusAdmin');
+        const profileNameColorAdminInput = document.getElementById('profileNameColorAdmin');
+        const profileBioColorAdminInput = document.getElementById('profileBioColorAdmin');
+        const linksListContainerAdmin = document.getElementById('linksListContainerAdmin');
+        const addLinkBtnAdmin = document.getElementById('addLinkBtnAdmin');
+        const generateConfigBtnAdmin = document.getElementById('generateConfigBtnAdmin');
+        const generatedJsonOutputAdmin = document.getElementById('generatedJsonOutputAdmin');
+
+        let linksDataAdmin = []; // To store link objects for the admin panel
+
+        // --- Utility to create default config ---
+        function createDefaultConfig() {
+            return {
+                profile: { name: "Your Name", bio: "Your Bio", pictureUrl: "", footerName: "Your Name" },
+                appearance: {
+                    backgroundImageUrl: "",
+                    card: { backgroundColor: "rgba(30,30,30,0.8)", textColor: "#FFFFFF", borderColor: "rgba(255,255,255,0.1)", borderRadius: "rounded-xl" },
+                    profileText: { nameColor: "#FFFFFF", bioColor: "#D1D5DB" }
+                },
+                links: []
+            };
+        }
+
+        // --- Function to Apply Config to Public View ---
+        function applyConfigToPublicView(config) {
+            currentConfig = JSON.parse(JSON.stringify(config)); // Deep copy
+
+            const profile = config.profile || {};
+            profileName.textContent = profile.name || 'Your Name';
+            profileBio.textContent = profile.bio || 'Your bio here.';
+            profilePicture.src = profile.pictureUrl || 'https://placehold.co/150x150/cccccc/969696?text=No+Image';
+            profilePicture.alt = profile.name ? `${profile.name}'s Profile Picture` : 'Profile Picture';
+            if (footerNameSpan) footerNameSpan.textContent = profile.footerName || profile.name || 'Your Name';
+
+            const appearance = config.appearance || {};
+            if (appearance.backgroundImageUrl) {
+                bodyElement.style.backgroundImage = `url('${appearance.backgroundImageUrl}')`;
+            } else {
+                bodyElement.style.backgroundImage = 'none'; // Or a default
             }
 
-            // Fetch the configuration file
-            fetch('config.json')
+            const card = appearance.card || {};
+            bioCard.style.backgroundColor = card.backgroundColor || 'rgba(30,30,30,0.8)';
+            bioCard.style.color = card.textColor || '#FFFFFF';
+            bioCard.style.borderColor = card.borderColor || 'rgba(255,255,255,0.1)';
+            bioCard.style.borderWidth = card.borderColor ? '1px' : '0px';
+            bioCard.style.borderStyle = card.borderColor ? 'solid' : 'none';
+            const existingRoundedClasses = Array.from(bioCard.classList).filter(cls => cls.startsWith('rounded-'));
+            existingRoundedClasses.forEach(cls => bioCard.classList.remove(cls));
+            bioCard.classList.add(card.borderRadius || 'rounded-xl');
+
+            const profileText = appearance.profileText || {};
+            profileName.style.color = profileText.nameColor || card.textColor || '#FFFFFF';
+            profileBio.style.color = profileText.bioColor || card.textColor || '#D1D5DB';
+
+            linksContainer.innerHTML = '';
+            const links = config.links || [];
+            links.forEach(linkInfo => {
+                if (linkInfo.enabled) {
+                    const linkElement = document.createElement('a');
+                    linkElement.href = linkInfo.url || '#';
+                    linkElement.target = '_blank';
+                    linkElement.rel = 'noopener noreferrer';
+                    linkElement.className = `biolink-button font-medium py-3 px-5 rounded-lg text-sm md:text-base ${linkInfo.classes || 'bg-gray-700 hover:bg-gray-600 text-white'}`;
+                    if (linkInfo.icon) {
+                        const iconElement = document.createElement('i');
+                        iconElement.className = `${linkInfo.icon}`;
+                        linkElement.appendChild(iconElement);
+                    }
+                    linkElement.appendChild(document.createTextNode(linkInfo.text || 'Link'));
+                    linksContainer.appendChild(linkElement);
+                }
+            });
+        }
+
+        // --- Functions for Admin Panel ---
+        function populateAdminForm(config) {
+            const profile = config.profile || {};
+            profileNameAdminInput.value = profile.name || '';
+            profileBioAdminInput.value = profile.bio || '';
+            profilePictureUrlAdminInput.value = profile.pictureUrl || '';
+            footerNameAdminInput.value = profile.footerName || profile.name || '';
+
+            const appearance = config.appearance || {};
+            backgroundImageUrlAdminInput.value = appearance.backgroundImageUrl || '';
+            const card = appearance.card || {};
+            cardBackgroundColorAdminInput.value = card.backgroundColor || 'rgba(20,20,20,0.75)';
+            cardTextColorAdminInput.value = card.textColor || '#E5E7EB';
+            cardBorderColorAdminInput.value = card.borderColor || 'rgba(255,255,255,0.2)';
+            cardBorderRadiusAdminInput.value = card.borderRadius || 'rounded-xl';
+            const profileText = appearance.profileText || {};
+            profileNameColorAdminInput.value = profileText.nameColor || '#FFFFFF';
+            profileBioColorAdminInput.value = profileText.bioColor || '#D1D5DB';
+
+            linksDataAdmin = JSON.parse(JSON.stringify(config.links || [])); // Deep copy for admin editing
+            renderLinksUIAdmin();
+        }
+
+        function renderLinksUIAdmin() {
+            linksListContainerAdmin.innerHTML = '';
+            linksDataAdmin.forEach((link, index) => {
+                const linkItemDiv = document.createElement('div');
+                linkItemDiv.className = 'link-item-admin';
+                linkItemDiv.innerHTML = `
+                    <h3>Link ${index + 1} <span class="text-xs text-gray-400">(ID: ${link.id || 'new'})</span></h3>
+                    <div><label>Text:</label><input type="text" value="${link.text || ''}" class="link-input-text-admin"></div>
+                    <div><label>URL:</label><input type="url" value="${link.url || ''}" class="link-input-url-admin"></div>
+                    <div><label>Icon (FA):</label><input type="text" value="${link.icon || ''}" class="link-input-icon-admin"></div>
+                    <div><label>Classes (Tailwind):</label><input type="text" value="${link.classes || ''}" class="link-input-classes-admin"></div>
+                    <div><label>Enabled:</label><input type="checkbox" ${link.enabled ? 'checked' : ''} class="link-input-enabled-admin" style="width:auto; display:inline-block; margin-left: 5px;"></div>
+                    <button class="btn btn-danger btn-sm mt-2 remove-link-btn-admin" data-index="${index}"><i class="fas fa-trash-alt mr-1"></i>Remove</button>
+                `;
+                linksListContainerAdmin.appendChild(linkItemDiv);
+            });
+
+            document.querySelectorAll('.remove-link-btn-admin').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const indexToRemove = parseInt(e.currentTarget.dataset.index);
+                    linksDataAdmin.splice(indexToRemove, 1);
+                    renderLinksUIAdmin();
+                });
+            });
+        }
+
+        addLinkBtnAdmin.addEventListener('click', () => {
+            linksDataAdmin.push({
+                id: `link_${new Date().getTime()}`,
+                text: "New Link",
+                url: "#",
+                icon: "fas fa-link",
+                enabled: true,
+                classes: "bg-gray-500 hover:bg-gray-600 text-white"
+            });
+            renderLinksUIAdmin();
+        });
+
+        generateConfigBtnAdmin.addEventListener('click', () => {
+            const linkItems = linksListContainerAdmin.querySelectorAll('.link-item-admin');
+            const updatedLinksData = [];
+            linkItems.forEach((item, i) => { // Use i for current index in DOM iteration
+                updatedLinksData.push({
+                    id: linksDataAdmin[i].id, // Preserve original ID
+                    text: item.querySelector('.link-input-text-admin').value,
+                    url: item.querySelector('.link-input-url-admin').value,
+                    icon: item.querySelector('.link-input-icon-admin').value,
+                    classes: item.querySelector('.link-input-classes-admin').value,
+                    enabled: item.querySelector('.link-input-enabled-admin').checked
+                });
+            });
+            linksDataAdmin = updatedLinksData;
+
+            const newConfig = {
+                profile: {
+                    name: profileNameAdminInput.value,
+                    bio: profileBioAdminInput.value,
+                    pictureUrl: profilePictureUrlAdminInput.value,
+                    footerName: footerNameAdminInput.value
+                },
+                appearance: {
+                    backgroundImageUrl: backgroundImageUrlAdminInput.value,
+                    card: {
+                        backgroundColor: cardBackgroundColorAdminInput.value,
+                        textColor: cardTextColorAdminInput.value,
+                        borderColor: cardBorderColorAdminInput.value,
+                        borderRadius: cardBorderRadiusAdminInput.value
+                    },
+                    profileText: {
+                        nameColor: profileNameColorAdminInput.value,
+                        bioColor: profileBioColorAdminInput.value
+                    }
+                },
+                links: linksDataAdmin
+            };
+            generatedJsonOutputAdmin.value = JSON.stringify(newConfig, null, 2);
+            alert('Configuration generated! Copy the JSON below and save it as config.json.');
+        });
+
+        // --- Admin Panel Toggle ---
+        adminToggleButton.addEventListener('click', () => {
+            if (adminPanelContainer.style.display === 'none' || adminPanelContainer.style.display === '') {
+                // Before showing, populate with the latest loaded config
+                populateAdminForm(currentConfig);
+                adminPanelContainer.style.display = 'block';
+                adminToggleButton.innerHTML = '<i class="fas fa-times"></i> Close Admin';
+                bioCard.style.display = 'none'; // Hide BioCard when admin panel is open
+            } else {
+                adminPanelContainer.style.display = 'none';
+                adminToggleButton.innerHTML = '<i class="fas fa-cog"></i> Admin';
+                bioCard.style.display = 'block'; // Show BioCard
+                // Optionally, re-apply config to public view if live edits were made
+                 applyConfigToPublicView(currentConfig); // Re-apply original loaded config
+            }
+        });
+        
+        closeAdminPanelBtn.addEventListener('click', () => {
+            adminPanelContainer.style.display = 'none';
+            adminToggleButton.innerHTML = '<i class="fas fa-cog"></i> Admin';
+            bioCard.style.display = 'block'; // Show BioCard
+            applyConfigToPublicView(currentConfig); // Re-apply original loaded config
+        });
+
+
+        // --- Initial Load for Public View ---
+        document.addEventListener('DOMContentLoaded', () => {
+            if (currentYearSpan) {
+                currentYearSpan.textContent = new Date().getFullYear();
+            }
+
+            fetch('config.json?t=' + new Date().getTime()) // Cache buster
                 .then(response => {
-                    if (!response.ok) {
-                        // If config.json is not found or there's an error, throw an error.
-                        throw new Error(`HTTP error! status: ${response.status} - Could not load config.json. Make sure it's in the same directory as index.html and is valid JSON.`);
-                    }
-                    return response.json(); // Parse the JSON response
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status} - Could not load config.json.`);
+                    return response.json();
                 })
-                .then(config => {
-                    // --- Apply Profile Information ---
-                    const profile = config.profile || {}; // Fallback to empty object if profile is undefined
-                    document.getElementById('profileName').textContent = profile.name || 'Your Name';
-                    document.getElementById('profileBio').textContent = profile.bio || 'Your bio here.';
-                    document.getElementById('profilePicture').src = profile.pictureUrl || 'https://placehold.co/150x150/cccccc/969696?text=No+Image';
-                    document.getElementById('profilePicture').alt = profile.name ? `${profile.name}'s Profile Picture` : 'Profile Picture';
-                    document.getElementById('footerName').textContent = profile.footerName || profile.name || 'Your Name';
-
-
-                    // --- Apply Appearance Settings ---
-                    const appearance = config.appearance || {};
-
-                    // Background Image for the entire page
-                    if (appearance.backgroundImageUrl) {
-                        document.body.style.backgroundImage = `url('${appearance.backgroundImageUrl}')`;
-                    }
-
-                    // Card styling
-                    const cardConfig = appearance.card || {};
-                    const bioCard = document.getElementById('bioCard');
-                    bioCard.style.backgroundColor = cardConfig.backgroundColor || 'rgba(30, 30, 30, 0.8)'; // Default card background
-                    bioCard.style.color = cardConfig.textColor || '#FFFFFF'; // Default text color for the card content
-                    bioCard.style.borderColor = cardConfig.borderColor || 'rgba(255, 255, 255, 0.1)';
-                    bioCard.style.borderWidth = cardConfig.borderColor ? '1px' : '0px'; // Add border only if color is specified
-                    bioCard.style.borderStyle = cardConfig.borderColor ? 'solid' : 'none';
-
-                    // Apply Tailwind border radius class for the card
-                    // Remove any existing rounded-* classes first to avoid conflicts if changing dynamically
-                    const existingRoundedClasses = Array.from(bioCard.classList).filter(cls => cls.startsWith('rounded-'));
-                    existingRoundedClasses.forEach(cls => bioCard.classList.remove(cls));
-                    bioCard.classList.add(cardConfig.borderRadius || 'rounded-xl'); // Default to rounded-xl if not specified
-
-                    // Profile text specific colors (Name and Bio)
-                    const profileTextConfig = appearance.profileText || {};
-                    document.getElementById('profileName').style.color = profileTextConfig.nameColor || cardConfig.textColor || '#FFFFFF'; // Fallback to card text color, then to white
-                    document.getElementById('profileBio').style.color = profileTextConfig.bioColor || cardConfig.textColor || '#D1D5DB'; // Fallback to card text color, then to light gray
-
-
-                    // --- Populate Links ---
-                    const linksContainer = document.getElementById('linksContainer');
-                    linksContainer.innerHTML = ''; // Clear any placeholder content or previous links
-                    const links = config.links || []; // Fallback to empty array
-
-                    links.forEach(linkInfo => {
-                        if (linkInfo.enabled) { // Only add the link if it's enabled in the config
-                            const linkElement = document.createElement('a');
-                            linkElement.href = linkInfo.url || '#';
-                            linkElement.target = '_blank'; // Open links in a new tab
-                            linkElement.rel = 'noopener noreferrer'; // Security best practice for target="_blank"
-
-                            // Base classes for all buttons + specific classes from config for individual styling
-                            // Includes default styling if linkInfo.classes is not provided
-                            linkElement.className = `biolink-button font-medium py-3 px-5 rounded-lg text-sm md:text-base ${linkInfo.classes || 'bg-gray-700 hover:bg-gray-600 text-white'}`;
-
-                            // Add icon if specified
-                            if (linkInfo.icon) {
-                                const iconElement = document.createElement('i');
-                                iconElement.className = `${linkInfo.icon}`; // Font Awesome classes (e.g., "fab fa-twitter")
-                                // The margin-right for the icon is handled by the .biolink-button i CSS rule
-                                linkElement.appendChild(iconElement);
-                            }
-
-                            // Add link text
-                            linkElement.appendChild(document.createTextNode(linkInfo.text || 'Link'));
-                            linksContainer.appendChild(linkElement); // Add the new link to the container
-                        }
-                    });
+                .then(configFromFile => {
+                    applyConfigToPublicView(configFromFile);
                 })
                 .catch(error => {
                     console.error('Error loading or applying config:', error);
-                    // Display a user-friendly error message directly on the page if config fails
-                    const bioCard = document.getElementById('bioCard');
-                    if (bioCard) {
-                        // Clear existing content and show error
-                        bioCard.innerHTML = `<div class="text-center text-red-300 p-4 bg-red-900 bg-opacity-50 rounded-lg">
-                                                <h2 class="text-xl font-bold mb-2">Oops! Configuration Error</h2>
-                                                <p>Could not load or process the BioLink configuration (config.json).</p>
-                                                <p class="text-xs mt-2 font-mono">${error.message}</p>
-                                                <p class="text-xs mt-1">Please ensure 'config.json' exists, is accessible, and is correctly formatted.</p>
-                                             </div>`;
-                        bioCard.style.backgroundColor = 'rgba(50,20,20,0.8)'; // Dark red error state background
-                        document.body.style.backgroundImage = 'none'; // Remove background image on error
-                        document.body.style.backgroundColor = '#111'; // Darker body background on error
-                    }
+                    applyConfigToPublicView(createDefaultConfig()); // Load defaults on error
+                    bioCard.innerHTML = `<div class="text-center text-red-300 p-4"><h2 class="text-xl font-bold mb-2">Config Error</h2><p>${error.message}</p></div>`;
                 });
         });
     </script>
